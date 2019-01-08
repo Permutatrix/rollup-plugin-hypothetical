@@ -92,6 +92,7 @@ module.exports = function rollupPluginHypothetical(options) {
   
   var resolveId = leaveIdsAlone ? basicResolve : function(importee, importer) {
     importee = unixStylePath(importee);
+    importer = unixStylePath(importer);
     
     // the entry file is never external.
     var importeeIsExternal = Boolean(importer) && isExternal(importee);
@@ -181,7 +182,11 @@ module.exports = function rollupPluginHypothetical(options) {
 }
 
 function unixStylePath(p) {
-  return p.split('\\').join('/');
+  if (typeof p === 'string') {
+    return p.split('\\').join('/');
+  }
+
+  return p;
 }
 
 function dneMessage(id) {
